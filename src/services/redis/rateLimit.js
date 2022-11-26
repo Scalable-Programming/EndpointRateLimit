@@ -1,4 +1,5 @@
 import { client } from ".";
+import { config } from "../../config";
 
 export const getCurrentUserRates = async (username) => {
     const value = await client.get(username);
@@ -7,6 +8,6 @@ export const getCurrentUserRates = async (username) => {
 };
 
 export const insertFirstUserRate = async (username) =>
-    client.set(username, "1", { EX: 10 });
+    client.set(username, "1", { EX: config.rateLimitTime });
 
 export const incrementUserRates = async (username) => client.INCR(username);

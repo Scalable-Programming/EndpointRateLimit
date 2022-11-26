@@ -8,4 +8,5 @@ export const config = {
     mongoDb: process.env.MONGO_DB,
     jwtSecret: process.env.JWT_SECRET,
     redisPw: process.env.REDIS_PW,
+    rateLimitTime: process.env.RATE_LIMIT_TIME,
 };

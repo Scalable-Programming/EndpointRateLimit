@@ -14,8 +14,9 @@ const getUser = async (username) => {
 
 const verifyUser = async (username, password) => {
     const user = await getUser(username);
+    const isValidPassword = await isValidHash(password, user.password);
 
-    if (!isValidHash(password, user.password)) {
+    if (!isValidPassword) {
         throw new WrongUserCredentialsError();
     }
 
@@ -23,7 +24,7 @@ const verifyUser = async (username, password) => {
 };
 
 const insertUser = async (username, password, rateLimit) => {
-    const hashedPassword = getHashedValue(password);
+    const hashedPassword = await getHashedValue(password);
     await userCollection.insertOne({
         username,
         password: hashedPassword,
