@@ -37,3 +37,11 @@ export class UsernameAlreadyTakenError extends Error {
         this.message = "Please provide new username. This one is already taken";
     }
 }
+
+export class RateLimitExceededError extends Error {
+    constructor() {
+        super();
+        this.name = "RateLimitExceededError";
+        this.message = "Rate limit is exceeded. Try in a minute again.";
+    }
+}

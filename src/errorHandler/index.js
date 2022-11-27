@@ -1,5 +1,6 @@
 import {
     InvalidJWTError,
+    RateLimitExceededError,
     UserNotFoundError,
     WrongUserCredentialsError,
 } from "../errors";
@@ -23,6 +24,9 @@ export const handleError = (error, req, res, next) => {
             break;
         case MissingJWTError:
             statusCode = 401;
+            break;
+        case RateLimitExceededError:
+            statusCode = 429;
             break;
         default:
             break;

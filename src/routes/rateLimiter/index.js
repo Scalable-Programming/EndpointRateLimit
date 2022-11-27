@@ -1,30 +1,17 @@
 import { Router } from "express";
-import {
-    getCurrentUserRates,
-    incrementUserRates,
-    insertFirstUserRate,
-} from "./../../services/redis/rateLimit";
+import { validateRateLimit } from "./../../controllers/rateLimiter/index";
 
 const router = Router();
 
-router.get("/rate-limit", async (req, res) => {
+router.get("/rate-limit", async (req, res, next) => {
     const { username, rateLimit } = req.user;
 
-    const rate = await getCurrentUserRates(username);
-
-    if (!rate) {
-        await insertFirstUserRate(username);
-        return res.json({ success: true });
+    try {
+        await validateRateLimit(rateLimit, username);
+        res.json({ success: true });
+    } catch (error) {
+        next(error);
     }
-
-    const hasValidRate = rateLimit >= rate + 1;
-
-    if (!hasValidRate) {
-        return res.json({ success: false });
-    }
-
-    await incrementUserRates(username);
-    res.json({ success: true });
 });
 
 export { router as rateLimitRouter };
